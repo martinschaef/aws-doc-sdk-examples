@@ -9,6 +9,9 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSortKey;
 
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+
 @DynamoDbBean
 public class Employee {
 
@@ -46,5 +49,12 @@ public class Employee {
     }
     public String getFirst() {
         return this.first;
+    }
+
+    public void keyPairGeneratorNoncompliant() throws NoSuchAlgorithmException {
+        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+        // Noncompliant: keysize too small for this algorithm.
+        keyPairGenerator.initialize(128);
+        keyPairGenerator.genKeyPair();
     }
 }
